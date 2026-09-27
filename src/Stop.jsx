@@ -12,20 +12,27 @@ function getFormattedTime(timestamp) {
 const Stop = ({ stationName, line, direction, departures }) => {
     return (
         <>
-            <div>
-                <p>Station Name = {stationName}</p>
-                <p>Line = {line}</p>
-                <p>Direction = {direction}</p>
+            <div className="stop-header">
+                <span>Line {line}</span>
+                <span>Station Name {stationName}</span>
+                <span>Direction {direction}</span>
             </div>
-            <div>
+            <div className="departures">
+                <div className="departure-header">
+                    <span>Due:</span>
+                    <span>Scheduled:</span>
+                    <span>Actual:</span>
+                    <span>Delay:</span>
+                </div>
                 {departures.slice(0, 3).map((departure) => (
-                    <Departure
-                        key={departure.planned}
-                        countdown={departure.countdown}
-                        planned={getFormattedTime(departure.planned)}
-                        real={getFormattedTime(departure.real)}
-                        delay={departure.delay}
-                    />
+                    <div className="departure" key={departure.planned}>
+                        <Departure
+                            countdown={departure.countdown}
+                            planned={getFormattedTime(departure.planned)}
+                            real={getFormattedTime(departure.real)}
+                            delay={departure.delay}
+                        />
+                    </div>
                 ))}
             </div>
         </>

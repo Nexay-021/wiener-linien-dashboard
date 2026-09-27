@@ -6,26 +6,33 @@ const App = () => {
     const [departures, setDepartures] = useState([]);
 
     useEffect(() => {
-        fetch("/api/ogd_realtime/monitor?stopId=1877")
-            .then((response) => response.json())
-            .then((data) => {
-                setData(data);
+        function fetchDepartures() {
+            fetch("/api/ogd_realtime/monitor?stopId=1877")
+                .then((response) => response.json())
+                .then((data) => {
+                    setData(data);
 
-                const departures =
-                    data?.data.monitors[0].lines[0].departures.departure;
-                const departuresInfo = departures.map((departure) => {
-                    return {
-                        countdown: departure.departureTime.countdown,
-                        planned: departure.departureTime.timePlanned,
-                        real: departure.departureTime.timeReal,
-                        delay: calculateDelay(
-                            departure.departureTime.timePlanned,
-                            departure.departureTime.timeReal,
-                        ),
-                    };
+                    const departures =
+                        data?.data.monitors[0].lines[0].departures.departure;
+                    const departuresInfo = departures.map((departure) => {
+                        return {
+                            countdown: departure.departureTime.countdown,
+                            planned: departure.departureTime.timePlanned,
+                            real: departure.departureTime.timeReal,
+                            delay: calculateDelay(
+                                departure.departureTime.timePlanned,
+                                departure.departureTime.timeReal,
+                            ),
+                        };
+                    });
+                    setDepartures(departuresInfo);
                 });
-                setDepartures(departuresInfo);
-            });
+        }
+
+        fetchDepartures();
+        const timer = setInterval(fetchDepartures, 30000);
+
+        return () => clearInterval(timer);
     }, []);
 
     const stationName = data?.data.monitors[0].locationStop.properties.title;
@@ -43,7 +50,7 @@ const App = () => {
 
     return (
         <>
-            <div className="wrapper">
+            <div className="stop">
                 <Stop
                     stationName={stationName}
                     line={line}
