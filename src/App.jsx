@@ -28,6 +28,10 @@ const App = () => {
             });
     }, []);
 
+    const stationName = data?.data.monitors[0].locationStop.properties.title;
+    const line = data?.data.monitors[0].lines[0].name;
+    const direction = data?.data.monitors[0].lines[0].towards;
+
     function getFormattedTime(timestamp) {
         timestamp = new Date(timestamp);
 
@@ -48,26 +52,18 @@ const App = () => {
 
     return (
         <>
-            <Departure
-                stationName={
-                    data?.data.monitors[0].locationStop.properties.title
-                }
-                line={data?.data.monitors[0].lines[0].name}
-                direction={data?.data.monitors[0].lines[0].towards}
-                countdown={
-                    data?.data.monitors[0].lines[0].departures.departure[0]
-                        .departureTime.countdown
-                }
-                planned={getFormattedTime(
-                    data?.data.monitors[0].lines[0].departures.departure[0]
-                        .departureTime.timePlanned,
-                )}
-                real={getFormattedTime(
-                    data?.data.monitors[0].lines[0].departures.departure[0]
-                        .departureTime.timeReal,
-                )}
-                delay={departure.delay}
-            />
+            <p>Station Name = {stationName}</p>
+            <p>Line = {line}</p>
+            <p>Direction = {direction}</p>
+            {departure.map((departure) => (
+                <Departure
+                    key={departure.planned}
+                    countdown={departure.countdown}
+                    planned={getFormattedTime(departure.planned)}
+                    real={getFormattedTime(departure.real)}
+                    delay={departure.delay}
+                />
+            ))}
         </>
     );
 };
