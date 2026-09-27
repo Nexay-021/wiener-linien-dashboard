@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import Departure from "./Departure.jsx";
+import Stop from "./Stop.jsx";
 
 const App = () => {
     const [data, setData] = useState(null);
-    const [departure, setDeparture] = useState([]);
+    const [departures, setDepartures] = useState([]);
 
     useEffect(() => {
         fetch("/api/ogd_realtime/monitor?stopId=1877")
@@ -24,22 +24,13 @@ const App = () => {
                         ),
                     };
                 });
-                setDeparture(departuresInfo);
+                setDepartures(departuresInfo);
             });
     }, []);
 
     const stationName = data?.data.monitors[0].locationStop.properties.title;
     const line = data?.data.monitors[0].lines[0].name;
     const direction = data?.data.monitors[0].lines[0].towards;
-
-    function getFormattedTime(timestamp) {
-        timestamp = new Date(timestamp);
-
-        const hours = timestamp.getHours();
-        const minutes = timestamp.getMinutes();
-
-        return `${hours}:${minutes.toString().padStart(2, "0")}`;
-    }
 
     function calculateDelay(planned, real) {
         const plannedTime = new Date(planned);
@@ -52,18 +43,14 @@ const App = () => {
 
     return (
         <>
-            <p>Station Name = {stationName}</p>
-            <p>Line = {line}</p>
-            <p>Direction = {direction}</p>
-            {departure.map((departure) => (
-                <Departure
-                    key={departure.planned}
-                    countdown={departure.countdown}
-                    planned={getFormattedTime(departure.planned)}
-                    real={getFormattedTime(departure.real)}
-                    delay={departure.delay}
+            <div className="wrapper">
+                <Stop
+                    stationName={stationName}
+                    line={line}
+                    direction={direction}
+                    departures={departures}
                 />
-            ))}
+            </div>
         </>
     );
 };
