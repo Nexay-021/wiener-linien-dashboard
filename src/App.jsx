@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { line1PrhToStf, line1StfToPrh } from "./data/line1Route.js";
 import Stop from "./Stop.jsx";
+import Direction from "./Direction.jsx";
 
 const App = () => {
     const [data, setData] = useState(null);
@@ -50,14 +52,14 @@ const App = () => {
 
     return (
         <>
-            <div className="stop">
-                <Stop
-                    stationName={stationName}
-                    line={line}
-                    direction={direction}
-                    departures={departures}
-                />
-            </div>
+            <Direction
+                title="Prater Hauptallee → Stefan Fadinger Platz"
+                stops={line1PrhToStf}
+            />
+            <Direction
+                title="Stefan Fadinger Platz → Prater Hauptallee"
+                stops={line1StfToPrh}
+            />
         </>
     );
 };

@@ -9,31 +9,30 @@ function getFormattedTime(timestamp) {
     return `${hours}:${minutes.toString().padStart(2, "0")}`;
 }
 
-const Stop = ({ stationName, line, direction, departures }) => {
+const Stop = ({ name, stopId }) => {
     return (
         <>
-            <div className="stop-header">
-                <span>Line {line}</span>
-                <span>Station Name {stationName}</span>
-                <span>Direction {direction}</span>
-            </div>
-            <div className="departures">
-                <div className="departure-header">
-                    <span>Due:</span>
-                    <span>Scheduled:</span>
-                    <span>Actual:</span>
-                    <span>Delay:</span>
-                </div>
-                {departures.slice(0, 3).map((departure) => (
-                    <div className="departure" key={departure.planned}>
-                        <Departure
-                            countdown={departure.countdown}
-                            planned={getFormattedTime(departure.planned)}
-                            real={getFormattedTime(departure.real)}
-                            delay={departure.delay}
-                        />
+            <div className="stop">
+                <span className="stop-marker">●</span>
+
+                <div className="stop-name">{name}</div>
+
+                <div className="departures">
+                    <div className="departure">
+                        <span>3 min</span>
+                        <span>+3</span>
                     </div>
-                ))}
+
+                    <div className="departure">
+                        <span>8 min</span>
+                        <span>+1</span>
+                    </div>
+
+                    <div className="departure">
+                        <span>14 min</span>
+                        <span>+0</span>
+                    </div>
+                </div>
             </div>
         </>
     );
