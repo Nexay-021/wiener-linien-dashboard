@@ -1,45 +1,57 @@
 import { useState, useEffect } from "react";
 import { line1PrhToStf, line1StfToPrh } from "./data/line1Route.js";
-import Stop from "./Stop.jsx";
 import Direction from "./Direction.jsx";
 
 const App = () => {
-    const [data, setData] = useState(null);
-    const [departures, setDepartures] = useState([]);
+    const [departures, setDepartures] = useState({});
 
     useEffect(() => {
         function fetchDepartures() {
-            fetch("/api/ogd_realtime/monitor?stopId=1877")
+            fetch(`/api/ogd_realtime/monitor?${queryString}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    setData(data);
+                    const monitors = data.data.monitors;
 
-                    const departures =
-                        data?.data.monitors[0].lines[0].departures.departure;
-                    const departuresInfo = departures.map((departure) => {
-                        return {
-                            countdown: departure.departureTime.countdown,
-                            planned: departure.departureTime.timePlanned,
-                            real: departure.departureTime.timeReal,
-                            delay: calculateDelay(
-                                departure.departureTime.timePlanned,
-                                departure.departureTime.timeReal,
-                            ),
-                        };
+                    const results = {};
+
+                    monitors.forEach((monitor) => {
+                        const stopId =
+                            monitor.locationStop.properties.attributes.rbl;
+
+                        const stopDepartures =
+                            monitor.lines[0].departures.departure;
+
+                        const departuresInfo = (stopDepartures ?? [])
+                            .slice(0, 3)
+                            .map((departure) => {
+                                return {
+                                    countdown:
+                                        departure.departureTime.countdown,
+                                    delay: calculateDelay(
+                                        departure.departureTime.timePlanned,
+                                        departure.departureTime.timeReal,
+                                    ),
+                                };
+                            });
+                        results[stopId] = departuresInfo;
                     });
-                    setDepartures(departuresInfo);
+                    setDepartures(results);
                 });
         }
 
+        const allStops = [...line1StfToPrh, ...line1PrhToStf];
+
+        const stopQueries = allStops.map((stop) => `stopId=${stop.stopId}`);
+
+        const queryString = stopQueries.join("&");
+        console.log(queryString);
+
         fetchDepartures();
-        const timer = setInterval(fetchDepartures, 30000);
 
-        return () => clearInterval(timer);
+        // const timer = setInterval(fetchAllDepartures, 60000);
+
+        // return () => clearInterval(timer);
     }, []);
-
-    const stationName = data?.data.monitors[0].locationStop.properties.title;
-    const line = data?.data.monitors[0].lines[0].name;
-    const direction = data?.data.monitors[0].lines[0].towards;
 
     function calculateDelay(planned, real) {
         const plannedTime = new Date(planned);
@@ -55,10 +67,12 @@ const App = () => {
             <Direction
                 title="Prater Hauptallee → Stefan Fadinger Platz"
                 stops={line1PrhToStf}
+                departures={departures}
             />
             <Direction
                 title="Stefan Fadinger Platz → Prater Hauptallee"
                 stops={line1StfToPrh}
+                departures={departures}
             />
         </>
     );

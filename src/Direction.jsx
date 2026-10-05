@@ -1,6 +1,6 @@
 import Stop from "./Stop.jsx";
 
-const Direction = ({ title, stops }) => {
+const Direction = ({ title, stops, departures }) => {
     return (
         <>
             <div className="direction-header">
@@ -13,6 +13,7 @@ const Direction = ({ title, stops }) => {
                         <Stop
                             name={stop.name}
                             stopId={stop.stopId}
+                            departures={departures[stop.stopId]}
                             key={stop.stopId}
                         />
                     );
