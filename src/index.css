@@ -5,9 +5,43 @@ body {
     background-color: #1e1e1e;
 }
 
+.dashboard-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    gap: 10px;
+}
+
+.project-information,
+.legend {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 10px;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    color: white;
+}
+
+.project-information {
+    align-items: center;
+}
+
+.legend {
+    align-items: flex-start;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
 .stop {
     position: relative;
-    max-width: 200px;
+    max-width: 250px;
     margin: 20px auto;
     padding: 12px;
     border-radius: 8px;
@@ -27,12 +61,34 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     margin-top: 10px;
+    gap: 10px;
 }
 
 .departure {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #262626;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: #fff;
+    padding: 4px;
+}
+
+.countdown {
+    font-weight: bold;
+}
+
+.delayed {
+    color: #60a5fa;
+}
+
+.early {
+    color: #f87171;
+}
+
+.on-time {
+    color: #4ade80;
 }
 
 .stop-marker {

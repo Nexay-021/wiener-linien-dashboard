@@ -2,7 +2,7 @@ import Stop from "./Stop.jsx";
 
 const Direction = ({ title, stops, departures }) => {
     return (
-        <>
+        <div className="direction-container">
             <div className="direction-header">
                 <span>{title}</span>
             </div>
@@ -19,7 +19,7 @@ const Direction = ({ title, stops, departures }) => {
                     );
                 })}
             </div>
-        </>
+        </div>
     );
 };
 

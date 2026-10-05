@@ -44,13 +44,12 @@ const App = () => {
         const stopQueries = allStops.map((stop) => `stopId=${stop.stopId}`);
 
         const queryString = stopQueries.join("&");
-        console.log(queryString);
 
         fetchDepartures();
 
-        // const timer = setInterval(fetchAllDepartures, 60000);
+        const timer = setInterval(fetchDepartures, 30000);
 
-        // return () => clearInterval(timer);
+        return () => clearInterval(timer);
     }, []);
 
     function calculateDelay(planned, real) {
@@ -64,16 +63,30 @@ const App = () => {
 
     return (
         <>
-            <Direction
-                title="Prater Hauptallee → Stefan Fadinger Platz"
-                stops={line1PrhToStf}
-                departures={departures}
-            />
-            <Direction
-                title="Stefan Fadinger Platz → Prater Hauptallee"
-                stops={line1StfToPrh}
-                departures={departures}
-            />
+            <div className="dashboard-header">
+                <div className="project-information">
+                    <span>LINE 1 LIVE DASHBOARD</span>
+                    <span>Realtime departures · Wiener Linien</span>
+                </div>
+                <div className="legend">
+                    <span>DEPARTURE INFO</span>
+                    <span>3 min = departs in 3 min</span>
+                    <span>+3 = 3 min delay</span>
+                    <span>0 = on time</span>
+                </div>
+            </div>
+            <div className="wrapper">
+                <Direction
+                    title="Prater Hauptallee → Stefan Fadinger Platz"
+                    stops={line1PrhToStf}
+                    departures={departures}
+                />
+                <Direction
+                    title="Stefan Fadinger Platz → Prater Hauptallee"
+                    stops={line1StfToPrh}
+                    departures={departures}
+                />
+            </div>
         </>
     );
 };
