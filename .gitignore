@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Wiener Linien source datasets
+src/data/wienerlinien-ogd-fahrwegverlaeufe.csv
+src/data/wienerlinien-ogd-haltepunkte.csv
