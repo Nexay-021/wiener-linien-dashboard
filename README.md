@@ -1,19 +1,73 @@
-# React + Vite
+# Wiener Linien – Line 1 Live Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive web application that displays live departure information for Vienna's tram line 1 in both directions, from Prater Hauptallee to Stefan-Fadinger-Platz and vice versa.
 
-Currently, two official plugins are available:
+The dashboard uses the public Wiener Linien Open Government Data (OGD) API to retrieve departure countdowns and calculate delays. Data refreshes automatically every 30 seconds.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This project was developed independently as a practical exercise in React, JavaScript, API integration, and frontend development.
 
-## React Compiler
+## Features
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- Live departure information for tram line 1 in both directions
+- Up to three upcoming departures per stop
+- Delay indicators with color-coded statuses
+- Automatic data refresh every 30 seconds
+- Responsive layout for desktop and mobile
+- Loading indicators, error handling, and basic API data validation
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+## Technologies
 
-## Expanding the ESLint configuration
+- **React** – component-based user interface
+- **JavaScript** – data processing and application logic
+- **CSS** – layout, styling, and responsive design
+- **Vite** – development server and production builds
+- **Wiener Linien OGD API** – public transport departure data
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting Started
+
+### Requirements
+
+- Node.js
+- npm
+
+### Installation
+
+1. Clone the repository.
+2. Open the project directory.
+3. Install dependencies:
+
+    `npm install`
+
+4. Start the development server:
+
+    `npm run dev`
+
+5. Open the local URL displayed in the terminal.
+
+### Production Build
+
+Create an optimized production build:
+
+`npm run build`
+
+Preview the generated build locally:
+
+`npm run preview`
+
+## Limitations
+
+- Currently supports only tram line 1.
+- Departure information depends on the availability and accuracy of the Wiener Linien OGD API.
+- The project is an independent prototype and is not an official Wiener Linien application.
+- Production hosting requires a working API routing configuration.
+
+## Future Improvements
+
+- Support for additional tram lines
+- Service disruptions and traffic notifications
+- Scheduled and actual departure interval analysis
+- Additional filtering and visualization options
+
+## Data Source
+
+Departure data is provided by the public Wiener Linien Open Government Data API.

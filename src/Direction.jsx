@@ -12,7 +12,6 @@ const Direction = ({ title, stops, departures }) => {
                     return (
                         <Stop
                             name={stop.name}
-                            stopId={stop.stopId}
                             departures={departures[stop.stopId]}
                             key={stop.stopId}
                         />
