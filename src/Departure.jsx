@@ -1,7 +1,9 @@
 const Departure = ({ countdown, delay }) => {
     let delayClass;
 
-    if (delay > 1) {
+    if (delay === null) {
+        delayClass = "unknown";
+    } else if (delay > 1) {
         delayClass = "delayed";
     } else if (delay < -1) {
         delayClass = "early";
@@ -13,7 +15,7 @@ const Departure = ({ countdown, delay }) => {
             <span className="countdown">{countdown} min</span>
 
             <span className={delayClass}>
-                {delay > 0 ? `+${delay}` : delay}
+                {delay === null ? "-" : delay > 0 ? `+${delay}` : delay}
             </span>
         </>
     );

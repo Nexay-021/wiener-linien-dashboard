@@ -9,19 +9,23 @@ const Stop = ({ name, departures }) => {
                 <div className="stop-name">{name}</div>
 
                 <div className="departures">
-                    {(departures ?? []).map((departure) => {
-                        return (
-                            <div
-                                className="departure"
-                                key={departure.countdown}
-                            >
-                                <Departure
-                                    countdown={departure.countdown}
-                                    delay={departure.delay}
-                                />
-                            </div>
-                        );
-                    })}
+                    {departures?.length > 0 ? (
+                        departures.map((departure) => {
+                            return (
+                                <div
+                                    className="departure"
+                                    key={departure.timePlanned}
+                                >
+                                    <Departure
+                                        countdown={departure.countdown}
+                                        delay={departure.delay}
+                                    />
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <span className="no-departures">No departures</span>
+                    )}
                 </div>
             </div>
         </>
