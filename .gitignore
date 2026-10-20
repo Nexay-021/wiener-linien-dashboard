@@ -26,3 +26,8 @@ dist-ssr
 # Wiener Linien source datasets
 src/data/wienerlinien-ogd-fahrwegverlaeufe.csv
 src/data/wienerlinien-ogd-haltepunkte.csv
+
+# Environment files
+.env
+.env.*
+!.env.example

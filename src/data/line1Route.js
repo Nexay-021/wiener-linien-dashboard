@@ -39,7 +39,7 @@ export const line1StfToPrh = [
     { stopId: 1884, name: "Knöllgasse" },
     { stopId: 426, name: "Matzleinsdorfer Platz S" },
     { stopId: 831, name: "Kliebergasse" },
-    { stopId: 1751, name: "Laurenzgassse" },
+    { stopId: 1751, name: "Laurenzgasse" },
     { stopId: 1752, name: "Johann-Strauß-Gasse" },
     { stopId: 1753, name: "Mayerhofgasse" },
     { stopId: 1754, name: "Paulanergasse" },
