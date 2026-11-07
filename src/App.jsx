@@ -44,8 +44,12 @@ const App = () => {
                             (line) => line.name === "1",
                         );
 
+                        if (!line1) {
+                            return;
+                        }
+
                         const stopDepartures =
-                            line1?.departures?.departure ?? [];
+                            line1.departures?.departure ?? [];
 
                         if (!Array.isArray(stopDepartures)) {
                             return;
