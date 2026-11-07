@@ -12,7 +12,9 @@ const App = () => {
             fetch(`/api/ogd_realtime/monitor?${queryString}`)
                 .then((response) => {
                     if (!response.ok) {
-                        throw new Error(`HTTP error: ${response.status}`);
+                        throw new Error(
+                            `HTTP ${response.status}: ${response.statusText || "Unknown error"}`,
+                        );
                     }
 
                     return response.json();
@@ -142,7 +144,7 @@ const App = () => {
                 <p className="loading-message">Loading departures...</p>
             )}
             {error && <p className="error-message">{error}</p>}
-            {!loading && Object.keys(departures).length > 0 && (
+            {!loading && !error && Object.keys(departures).length > 0 && (
                 <div className="wrapper">
                     <Direction
                         title="Prater Hauptallee → Stefan Fadinger Platz"
