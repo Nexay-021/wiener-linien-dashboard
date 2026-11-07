@@ -8,7 +8,15 @@ const Stop = ({ name, departures }) => {
             <div className="stop-name">{name}</div>
 
             <div className="departures">
-                {departures?.length > 0 ? (
+                {!Array.isArray(departures) ? (
+                    <span className="no-departures">
+                        No realtime data available
+                    </span>
+                ) : departures.length === 0 ? (
+                    <span className="no-departures">
+                        No upcoming departures reported
+                    </span>
+                ) : (
                     departures.map((departure) => {
                         return (
                             <div
@@ -22,8 +30,6 @@ const Stop = ({ name, departures }) => {
                             </div>
                         );
                     })
-                ) : (
-                    <span className="no-departures">No departures</span>
                 )}
             </div>
         </div>
