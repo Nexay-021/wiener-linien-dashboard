@@ -140,6 +140,16 @@ const App = () => {
                     </span>
                 </div>
             </div>
+            <div className="route-container">
+                <div className="route-notice">
+                    <span className="route-title">Service Notice</span>
+                    <span>This dashboard displays Line 1's regular route.</span>
+                    <span>
+                        Temporary diversions may affect displayed stops and
+                        departures.
+                    </span>
+                </div>
+            </div>
             {loading && (
                 <p className="loading-message">Loading departures...</p>
             )}

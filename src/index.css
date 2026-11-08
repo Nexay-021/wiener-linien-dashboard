@@ -24,11 +24,36 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
     color: white;
     font-size: 1.2rem;
+    text-align: center;
+}
+
+.route-title {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.route-notice {
+    max-width: 550px;
+    width: calc(100% - 40px);
+    box-sizing: border-box;
+    margin: 10px auto 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    color: white;
+    font-size: 0.9rem;
+    text-align: center;
 }
 
 .header-title {
     font-weight: bold;
     font-size: 1.4rem;
+    text-align: center;
 }
 
 .loading-message {
@@ -110,7 +135,6 @@ body {
 
 .stop-marker {
     position: absolute;
-
     left: 50%;
     transform: translateX(-50%);
     top: -12px;
