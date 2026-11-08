@@ -1,86 +1,108 @@
 # Wiener Linien – Line 1 Live Dashboard
 
-A React dashboard displaying live departure information for Vienna’s tram line 1 in both directions between Prater Hauptallee and Stefan-Fadinger-Platz.
+A responsive React dashboard displaying realtime departure information for Vienna's tram line 1 in both directions between Prater Hauptallee and Stefan-Fadinger-Platz.
 
-The application fetches departure data from the Wiener Linien Open Government Data (OGD) API and refreshes automatically every 30 seconds.
+The application retrieves data from the Wiener Linien Open Government Data (OGD) API and automatically refreshes departure information every 30 seconds.
 
 ## Screenshots
 
 ### Dashboard and departure legend
 
-![Dashboard title and colour-coded departure legend](docs/images/dashboard-header.png)
+![Dashboard header and departure legend](docs/images/dashboard-header.png)
 
 ### Departure cards
 
-![Departure countdowns for Prater Hauptallee and Wittelsbachstraße](docs/images/dashboard-departures.png)
+![Departure countdowns and station cards](docs/images/dashboard-departures.png)
 
 ## Features
 
-- Both directions displayed with stops in route order
-- Up to three upcoming departures per stop
-- Departure countdowns in minutes
-- Colour-coded indicators for on-time, delayed, early, and unavailable delay information
-- Automatic refresh every 30 seconds
-- Responsive layout with two columns on desktop and one on smaller screens
-- Initial loading indicator, error messages, and basic API response validation
+- Displays both directions of tram line 1 with stops in route order
+- Shows up to three upcoming departures per stop
+- Displays departure countdowns in minutes
+- Colour-coded delay indicators for on-time, delayed and early departures
+- Automatically refreshes data every 30 seconds
+- Responsive two-column desktop and single-column mobile layout
+- Initial loading indicator and HTTP/network error handling
+- Distinguishes unavailable realtime data from empty departure lists
+- Hides outdated departure information when API requests fail
+- Displays a service notice explaining temporary route limitations
 
 ## Technologies
 
-- React
-- JavaScript
-- CSS
-- Vite
-- Wiener Linien OGD API
+- **React** – Component-based user interface
+- **JavaScript** – Data processing and application logic
+- **CSS** – Styling and responsive layouts
+- **Vite** – Development tooling and API proxy
+- **Wiener Linien OGD API** – Realtime public transport data
 
 ## Getting Started
 
 ### Requirements
 
-- A Node.js version compatible with the project's Vite and ESLint versions
+- Node.js compatible with the project's Vite version
 - npm
-- Internet access to retrieve live departure data
+- Internet connection for realtime API requests
 
 ### Installation
 
-Clone this repository and open its folder:
+Clone the repository:
 
-    git clone https://github.com/Nexay-021/wiener-linien-dashboard.git
-    cd wiener-linien-dashboard
+```bash
+git clone https://github.com/Nexay-021/wiener-linien-dashboard.git
+cd wiener-linien-dashboard
+```
 
-Install dependencies using the included lockfile:
+Install dependencies:
 
-    npm ci
+```bash
+npm ci
+```
 
 Start the development server:
 
-    npm run dev
+```bash
+npm run dev
+```
 
-Open the local URL shown in the terminal.
+Open the local URL displayed in the terminal.
 
 ### Available Commands
 
-| Command           | Purpose                              |
-| ----------------- | ------------------------------------ |
-| `npm run dev`     | Start the development server         |
-| `npm run build`   | Create a production build in `dist`  |
-| `npm run preview` | Preview the production build locally |
-| `npm run lint`    | Run ESLint checks                    |
+| Command           | Description                            |
+| ----------------- | -------------------------------------- |
+| `npm run dev`     | Start the Vite development server      |
+| `npm run build`   | Generate an optimized production build |
+| `npm run preview` | Preview the production build locally   |
+| `npm run lint`    | Run ESLint checks                      |
 
 ## How It Works
 
-### Route Data
+### Route Configuration
 
-Stop information for both directions is stored in `src/data/line1Route.js`.
+Stop names and RBL identifiers for both directions are defined in `src/data/line1Route.js`.
 
-The original Wiener Linien CSV datasets were used to prepare this route data. They are excluded from the repository and are not needed to run the application.
+The route configuration was prepared using Wiener Linien's published CSV datasets. These source files are not required to run the application and are excluded from the repository.
 
-### Live Departures
+The dashboard currently uses a predefined route rather than dynamically reconstructing routes during service disruptions.
 
-The application builds a request using the stop IDs from the route data. It selects tram line 1 from the returned monitor information and displays up to three departures with valid countdown values per stop.
+### Realtime Departures
+
+The application collects the configured stop IDs and sends them as query parameters to the Wiener Linien realtime API.
+
+The response is processed to:
+
+1. Identify the returned stop information.
+2. Select departures belonging to tram line 1.
+3. Skip monitors belonging to unrelated lines.
+4. Filter departures with valid countdown values.
+5. Extract up to three upcoming departures per stop.
+6. Store the processed data by stop ID for rendering.
+
+React components then display the information for each station and direction.
 
 ### Delay Indicators
 
-Delay is calculated as the difference between the API's real-time and planned departure timestamps, rounded upward to whole minutes.
+Delay is calculated from the difference between the planned and realtime departure timestamps, rounded upward to whole minutes.
 
 | Displayed delay    | Status                        |
 | ------------------ | ----------------------------- |
@@ -89,43 +111,75 @@ Delay is calculated as the difference between the API's real-time and planned de
 | −2 minutes or less | Early                         |
 | `-`                | Delay information unavailable |
 
-These categories are display rules used by this project.
+These classifications are presentation rules defined for this project.
+
+### Missing Data and Error Handling
+
+The dashboard distinguishes between several situations:
+
+| Situation                        | Application behaviour                               |
+| -------------------------------- | --------------------------------------------------- |
+| Valid departure data             | Displays countdowns and delay indicators            |
+| Empty usable departure list      | Shows "No upcoming departures reported"             |
+| Missing Line 1 data for a stop   | Shows "No realtime data available"                  |
+| HTTP or network failure          | Displays an error message and hides departure cards |
+| Successful request after failure | Restores departure information automatically        |
+
+HTTP errors include the status code and available status description.
+
+Missing data does not necessarily indicate a service disruption. It can also occur when the API does not provide usable departure information for a requested stop.
 
 ## API Routing and Hosting
 
-During development, the Vite proxy forwards requests beginning with `/api` to `https://www.wienerlinien.at`, removing the `/api` prefix.
+During local development, Vite uses a proxy to forward requests beginning with `/api` to the Wiener Linien API at `https://www.wienerlinien.at`, removing the `/api` prefix.
 
 For example:
 
-    /api/ogd_realtime/monitor?...
-    → https://www.wienerlinien.at/ogd_realtime/monitor?...
+```text
+/api/ogd_realtime/monitor?stopId=171
+```
 
-This development proxy is not included in the generated production files. A deployed version needs equivalent server-side routing or a backend proxy for live data requests.
+is forwarded to:
 
-Building the project alone does not configure production API access.
+```text
+https://www.wienerlinien.at/ogd_realtime/monitor?stopId=171
+```
 
-## Limitations
+The development proxy is not included in Vite's generated production files.
+
+A hosted version would therefore require equivalent server-side routing or a backend proxy to access the realtime API.
+
+**This repository is intended primarily as a locally run portfolio and learning project.** Production deployment is not currently configured.
+
+## Known Limitations
 
 - Only tram line 1 is supported.
-- Live information depends on the availability and accuracy of the Wiener Linien API.
-- Refreshes happen every 30 seconds, rather than continuously.
-- If a refresh fails, previously loaded departures remain visible alongside an error message.
-- “No departures” can indicate an empty departure list or unavailable stop data.
-- Delay rounding is asymmetric because values are rounded upward.
-- This is an independent learning project, not an official Wiener Linien application.
-
-## Project Background
-
-I built this project to practise React, JavaScript, API integration, and responsive frontend development, with AI assistance for guidance, debugging, and parts of the implementation.
+- The displayed stop order follows a predefined route.
+- Temporary diversions are not automatically reflected in the route configuration.
+- Stops affected by service changes may have unavailable departure data.
+- Realtime information depends on the availability and accuracy of the Wiener Linien API.
+- Data refreshes every 30 seconds rather than continuously.
+- Delay values are rounded upward to whole minutes.
+- The application is not an official Wiener Linien product.
 
 ## Possible Future Improvements
 
-- Show when departure data was last successfully updated
-- Distinguish unavailable data from stops with no upcoming departures
-- Support additional tram lines
-- Display service disruptions
-- Add filtering and further visualisations
+- Display the timestamp of the last successful data update
+- Support additional tram and public transport lines
+- Integrate service disruption information from the API
+- Dynamically adapt stop lists during temporary route diversions
+- Add line selection, filtering and additional visualisations
+
+## Project Background
+
+This project was developed to practise React, JavaScript, asynchronous API integration, data processing, error handling and responsive frontend development.
+
+It also provided practical experience with debugging realtime API responses, managing Git branches and improving application reliability.
+
+AI tools were used for technical guidance, debugging and assistance with parts of the implementation.
 
 ## Data Source
 
-Live departure information and the source route datasets come from Wiener Linien Open Government Data.
+Realtime departure information and the original route datasets are provided by **Wiener Linien Open Government Data (OGD)**.
+
+This is an independent educational project and is not affiliated with or endorsed by Wiener Linien.
