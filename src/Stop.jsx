@@ -1,6 +1,6 @@
 import Departure from "./Departure.jsx";
 
-const Stop = ({ name, departures }) => {
+const Stop = ({ name, departures, isTerminal }) => {
     return (
         <div className="stop">
             <span className="stop-marker">●</span>
@@ -8,7 +8,9 @@ const Stop = ({ name, departures }) => {
             <div className="stop-name">{name}</div>
 
             <div className="departures">
-                {!Array.isArray(departures) ? (
+                {isTerminal ? (
+                    <span className="no-departures">End of route</span>
+                ) : !Array.isArray(departures) ? (
                     <span className="no-departures">
                         No realtime data available
                     </span>

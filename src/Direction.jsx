@@ -8,12 +8,13 @@ const Direction = ({ title, stops, departures }) => {
             </div>
 
             <div className="direction">
-                {stops.map((stop) => {
+                {stops.map((stop, index) => {
                     return (
                         <Stop
                             name={stop.name}
                             departures={departures[stop.stopId]}
                             key={stop.stopId}
+                            isTerminal={index === stops.length - 1}
                         />
                     );
                 })}

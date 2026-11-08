@@ -7,6 +7,25 @@ const App = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    function calculateDelay(planned, real) {
+        if (planned == null || real == null) {
+            return null;
+        }
+        const plannedTime = new Date(planned);
+        const realTime = new Date(real);
+
+        if (
+            Number.isNaN(plannedTime.getTime()) ||
+            Number.isNaN(realTime.getTime())
+        ) {
+            return null;
+        }
+
+        const difference = realTime - plannedTime;
+
+        return Math.ceil(difference / 1000 / 60);
+    }
+
     useEffect(() => {
         function fetchDepartures() {
             fetch(`/api/ogd_realtime/monitor?${queryString}`)
@@ -102,25 +121,6 @@ const App = () => {
 
         return () => clearInterval(timer);
     }, []);
-
-    function calculateDelay(planned, real) {
-        if (planned == null || real == null) {
-            return null;
-        }
-        const plannedTime = new Date(planned);
-        const realTime = new Date(real);
-
-        if (
-            Number.isNaN(plannedTime.getTime()) ||
-            Number.isNaN(realTime.getTime())
-        ) {
-            return null;
-        }
-
-        const difference = realTime - plannedTime;
-
-        return Math.ceil(difference / 1000 / 60);
-    }
 
     return (
         <>

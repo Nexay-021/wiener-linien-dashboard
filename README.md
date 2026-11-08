@@ -17,6 +17,7 @@ The application retrieves data from the Wiener Linien Open Government Data (OGD)
 ## Features
 
 - Displays both directions of tram line 1 with stops in route order
+- Identifies terminal stops with an "End of route" indicator
 - Shows up to three upcoming departures per stop
 - Displays departure countdowns in minutes
 - Colour-coded delay indicators for on-time, delayed and early departures
@@ -117,13 +118,14 @@ These classifications are presentation rules defined for this project.
 
 The dashboard distinguishes between several situations:
 
-| Situation                        | Application behaviour                               |
-| -------------------------------- | --------------------------------------------------- |
-| Valid departure data             | Displays countdowns and delay indicators            |
-| Empty usable departure list      | Shows "No upcoming departures reported"             |
-| Missing Line 1 data for a stop   | Shows "No realtime data available"                  |
-| HTTP or network failure          | Displays an error message and hides departure cards |
-| Successful request after failure | Restores departure information automatically        |
+| Situation                             | Application behaviour                                 |
+| ------------------------------------- | ----------------------------------------------------- |
+| Valid departure data                  | Displays countdowns and delay indicators              |
+| Empty usable departure list           | Shows "No upcoming departures reported"               |
+| Missing Line 1 data for a stop        | Shows "No realtime data available"                    |
+| HTTP or network failure               | Displays an error message and hides departure cards   |
+| Successful request after failure      | Restores departure information automatically          |
+| Final stop in the displayed direction | Shows "End of route" instead of departure information |
 
 HTTP errors include the status code and available status description.
 
